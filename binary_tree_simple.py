@@ -19,6 +19,9 @@ class BinarySearchTree:
     def find(self, x: float) -> bool:
         return self._find(self.root, float(x))
 
+    def count(self, x: float) -> int:
+        return self._count(self.root, float(x))
+
     def inorder(self) -> List[float]:
         """Devuelve una lista ordenada con los valores del árbol."""
         return self._inorder(self.root)
@@ -42,7 +45,7 @@ class BinarySearchTree:
             node.right = self._add(node.right, x)
         return node
 
-    def _find(self, node: Optional["_Node"], x: float) -> bool:
+    def _find(self, node: Optional[_Node], x: float) -> bool:
         if node is None:
             return False
         if x == node.value:
@@ -50,7 +53,16 @@ class BinarySearchTree:
         if x < node.value:
             return self._find(node.left, x)
         return self._find(node.right, x)
-        
+    
+    def _count(self, node: Optional[_Node], x: float) -> int:
+        if node is None:
+            return 0
+        if x == node.value:
+            return 1 + self._count(node.right, x)
+        if x < node.value:
+            return self._count(node.left, x)
+        return self._count(node.right, x)
+
     def _inorder(self, node: Optional[_Node]) -> List[float]:
         if node is None:
             return []
@@ -118,5 +130,7 @@ if __name__ == "__main__":
     print(t.inorder())  # [2.0, 2.0, 4.0, 5.0]
     print(t.find(5.0))  # True
     print(t.find(10.0)) # False
+    print(t.count(2.0)) # 2
     t.remove(2.0)
+    print(t.count(2.0)) # 1
     print(t.inorder())  # [2.0, 4.0, 5.0]
